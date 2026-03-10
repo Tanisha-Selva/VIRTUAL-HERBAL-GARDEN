@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find My Herb</title>
+
+    <!-- Teachable Machine + TensorFlow -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #D1DECF;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 { margin-top: 40px; color: #2e4d32; }
+
+        .upload-box {
+            margin-top: 50px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            width: 60%;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 15px;
+            border: 2px solid #2e4d32;
+        }
+
+        input[type="file"] {
+            margin-top: 20px;
+            padding: 10px;
+        }
+
+        button {
+            margin-top: 25px;
+            padding: 12px 25px;
+            font-size: 16px;
+            background: #2e4d32;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        button:hover { background: #476b51; }
+
+        #preview {
+            margin-top: 25px;
+            width: 200px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        #result {
+            margin-top: 30px;
+            font-size: 20px;
+            color: #1a3b22;
+            font-weight: bold;
+        }
+
+        .know-more {
+            margin-top: 20px;
+            display: none;
+            padding: 12px 25px;
+            background: #1a3b22;
+            color: white;
+            border-radius: 10px;
+            font-size: 16px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .know-more:hover { background: #2e5b33; }
+
+        a { display: block; margin-top: 40px; text-decoration: none; color: #2e4d32; font-weight: bold; }
+    </style>
+</head>
+
+<body>
+
+<h1>Find My Herb 🌿</h1>
+
+<div class="upload-box">
+    <p>Upload a leaf image to identify the herb</p>
+
+    <input type="file" id="leafImage" accept="image/*" onchange="showPreview(event)">
+    <img id="preview" />
+
+    <button onclick="predictHerb()">Identify Herb</button>
+
+    <p id="result"></p>
+
+    <!-- Know More Button -->
+    <a id="knowMoreBtn" class="know-more" target="_blank">Know More →</a>
+</div>
+
+<a href="/">⬅ Back to Home</a>
+
+<script>
+    let model;
+    let isLoading = true;
+
+    // Load model
+    async function loadModel() {
+        const modelURL = "/static/model/model.json";
+        const metadataURL = "/static/model/metadata.json";
+
+        try {
+            model = await tmImage.load(modelURL, metadataURL);
+            isLoading = false;
+            console.log("Model Loaded Successfully!");
+        } catch (e) {
+            console.error("Model loading failed:", e);
+            alert("Error loading model. Check static/model folder.");
+        }
+    }
+
+    loadModel();
+
+    function showPreview(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            const img = document.getElementById("preview");
+            img.src = reader.result;
+            img.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Prediction
+    async function predictHerb() {
+        if (isLoading) {
+            document.getElementById("result").innerText =
+                "⏳ Model still loading... Please wait.";
+            return;
+        }
+
+        const image = document.getElementById("preview");
+        if (!image.src) {
+            document.getElementById("result").innerText = "Please upload an image first.";
+            return;
+        }
+
+        const prediction = await model.predict(image);
+        prediction.sort((a, b) => b.probability - a.probability);
+
+        const best = prediction[0];
+        const herbName = best.className;
+
+        // Show prediction
+        document.getElementById("result").innerHTML =
+            "🔍 Predicted Herb: <b>" + herbName + "</b><br>Confidence: " +
+            Math.round(best.probability * 100) + "%";
+
+        // Setup Know More button
+        const btn = document.getElementById("knowMoreBtn");
+        btn.style.display = "inline-block";
+
+        // Convert herb name → correct file name
+        const safeName = herbName.toLowerCase().replace(/ /g, "");
+        btn.href = "/" + safeName;  // Flask route → tulsi, neem, etc.
+    }
+</script>
+
+</body>
+</html>

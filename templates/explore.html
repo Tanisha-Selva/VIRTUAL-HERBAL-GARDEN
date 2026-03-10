@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Virtual Herbal Garden</title>
+<style>
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #D1DECF;
+    color: #333;
+}
+
+.search-area {
+    background: #D1DECF;
+}
+
+h1 {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 2rem;
+    background-color: #388E3C;
+    color: #fff;
+    margin: 0;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    background: #D1DECF;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: #D1DECF;
+    padding: 10px 0;
+    gap: 10px;
+}
+
+/* 🔥 Updated Tabs */
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    background: #ffffff;      /* WHITE tabs */
+    border: 1px solid #ccc;   /* light border */
+    color: #333;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+/* 🔥 Active Tab */
+.tab.active {
+    background: #388E3C;
+    color: #fff;
+    border-color: #388E3C;
+}
+
+.controls input, .controls select {
+    padding: 8px 12px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.plant-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.section {
+    margin-bottom: 30px;
+}
+
+.section h2 {
+    background-color: #388E3C;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.plants-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.plant-card {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    text-align: center;
+    transition: transform 0.2s;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.plant-card:hover {
+    transform: translateY(-5px);
+}
+
+.plant-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.plant-card h3 {
+    margin: 10px 0 5px 0;
+    font-size: 1rem;
+}
+
+.plant-card p {
+    font-size: 0.9rem;
+    margin: 5px 0 15px 0;
+    color: #555;
+}
+
+.plant-card button {
+    padding: 8px 14px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.plant-card button:hover {
+    background-color: #2E7D32;
+}
+
+.back-btn {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    padding: 8px 15px;
+    background-color: #388E3C;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+
+</style>
+</head>
+<body>
+<!-- Back button to go to home -->
+<button onclick="goHome()" class="back-btn">← </button>
+
+
+<h1>Virtual Herbal Garden</h1>
+
+<div class="controls">
+    <input type="text" id="searchInput" placeholder="Search plants...">
+    <select id="filterSelect">
+        <option value="">All Categories</option>
+        <option value="Women’s Health">Women’s Health</option>
+        <option value="Respiratory">Respiratory</option>
+        <option value="Skin & Hair">Skin & Hair</option>
+        <option value="Liver Health">Liver Health</option>
+        <option value="Immunity">Immunity</option>
+        <option value="Stress & Sleep">Stress & Sleep</option>
+        <option value="Pain Relief">Pain Relief</option>
+    </select>
+</div>
+
+<div class="tabs" id="tabs"></div>
+<div class="plant-container" id="plantContainer"></div>
+
+<script>
+const categories = ["Women’s Health", "Respiratory", "Skin & Hair", "Liver Health","Immunity","Stress & Sleep","Pain Relief"];
+const tabsContainer = document.getElementById("tabs");
+const plantContainer = document.getElementById("plantContainer");
+const searchInput = document.getElementById("searchInput");
+const filterSelect = document.getElementById("filterSelect");
+// Women’s Health Data
+const womensHealthData = [
+   {
+        heading: "Menstrual Cramps & Pain Relief",
+        plants: [
+            { name: "Ginger", img: "https://www.vitaeinternational.com/wp-content/uploads/2015/12/benefits-of-ginger-770x512.jpg", desc: "Reduces cramps and inflammation during periods." },
+            { name: "Fennel", img: "https://cloudinary.images-iherb.com/image/upload/f_auto,q_auto:eco/images/fro/fro02619/l/7.jpg", desc: "Relaxes uterine muscles and eases pain." },
+            { name: "Turmeric", img: "https://www.viralspices.com/wp-content/uploads/2022/01/Evaluating-the-Differences-between-Fresh-and-Dried-Turmeric-624x312.jpg", desc: "Anti-inflammatory, helps relieve menstrual pain." },
+            { name: "Chamomile", img: "https://media.post.rvohealth.io/wp-content/uploads/sites/3/2023/03/benefits_chamomile_tea_732x549_thumb-732x549.jpg", desc: "Calms muscles and reduces tension." },
+            { name: "Peppermint", img: "https://cdn.britannica.com/46/139046-050-68C68E11/Peppermint.jpg", desc: "Eases cramps and headaches during periods." },
+            { name: "Cinnamon", img: "https://images-prod.healthline.com/hlcmsresource/images/AN_images/health-benefits-cinnamon-1296x728.jpg", desc: "Reduces pain and heaviness in menstruation." },
+            { name: "Cramp Bark", img: "https://crampeze.com.au/wp-content/uploads/2023/11/KH-2-Cramp-Bark-a-wonder-ingredient.jpg", desc: "Traditional herb for menstrual cramps." },
+            { name: "Valerian Root", img: "https://cdn-prod.medicalnewstoday.com/content/images/articles/318/318088/valerian-root.jpg", desc: "Muscle relaxant for pain relief." },
+            { name: "Yarrow", img: "https://cdn.britannica.com/38/5638-050-4654D35A/Corymbs-yarrow.jpg", desc: "Helps relieve uterine pain and bleeding." },
+            { name: "Ashoka", img: "https://plantsguru.com/cdn/shop/files/sita-ashoka.jpg?v=1737012974", desc: "Reduces uterine discomfort and pain." }
+        ]
+    },
+    {
+        heading: "Heavy or Irregular Bleeding",
+        plants: [
+            { name: "Shepherds Purse", img: "https://www.bbg.org/img/uploads/hero/_list_thumbnail_retina/weed-shepherds-purse-SN_crop.jpg", desc: "Helps regulate heavy menstrual bleeding." },
+            { name: "Raspberry Leaf", img: "https://i.cdn.newsbytesapp.com/images/l99220250526095655.jpeg", desc: "Tonifies uterus and reduces excessive flow." },
+            { name: "Dong Quai", img: "https://ascopost.com/media/14020737/57-image.jpg", desc: "Supports healthy blood flow and cycle." },
+            { name: "Cramp Bark", img: "https://crampeze.com.au/wp-content/uploads/2023/11/KH-2-Cramp-Bark-a-wonder-ingredient.jpg", desc: "Balances uterine contractions." },
+            { name: "Yarrow", img: "https://cdn.britannica.com/38/5638-050-4654D35A/Corymbs-yarrow.jpg", desc: "Helps reduce bleeding and clotting." },
+            { name: "Ashoka", img: "https://plantsguru.com/cdn/shop/files/sita-ashoka.jpg?v=1737012974", desc: "Reduces excessive menstrual bleeding." }
+        ]
+    },
+    {
+        heading: "Hormonal Balance & PMS",
+        plants: [
+            { name: "Chasteberry", img: "https://lovewellness.com/cdn/shop/articles/Chasteberry.jpg?v=1677671018", desc: "Regulates cycles and eases PMS symptoms." },
+            { name: "Maca Root", img: "https://plantura.garden/uk/wp-content/uploads/sites/2/2022/10/sowing-maca-root.jpg?x54327", desc: "Balances hormones and boosts energy." },
+            { name: "Black Cohosh", img: "https://img.lb.wbmdstatic.com/vim/live/webmd/consumer_assets/site_images/article_thumbnails/BigBead/black_cohosh_bigbead/1800x1200_black_cohosh_bigbead.jpg", desc: "Reduces PMS, cramps, and mood swings." },
+            { name: "Red Clover", img: "https://i.guim.co.uk/img/media/9e7d6fe7eadf0bbba93de57c5ad37f9f23762a14/0_90_2700_1620/master/2700.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=9d1da39c2037557051bd6b2a3362352a", desc: "Supports hormonal health and PMS relief." },
+            { name: "Shatavari", img: "https://www.oilcure.com/cdn/shop/files/239.png?v=1723461032&width=1946", desc: "Balances female hormones naturally." },
+            { name: "Fenugreek", img: "https://img.lb.wbmdstatic.com/vim/live/webmd/consumer_assets/site_images/article_thumbnails/other/fenugreek_seeds_2_other/1800x1200_fenugreek_seeds__2_other.jpg", desc: "Hormonal support and cramp relief." }
+        ]
+    },
+    {
+        heading: "Mood, Anxiety & Sleep",
+        plants: [
+            { name: "Chamomile", img: "https://media.post.rvohealth.io/wp-content/uploads/sites/3/2023/03/benefits_chamomile_tea_732x549_thumb-732x549.jpg", desc: "Calms nerves and aids sleep." },
+            { name: "Lavender", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-ZTPQHdvg7_TPQz_oWDPfFRgn9aHUfUm3PA&s", desc: "Reduces anxiety and mood swings." },
+            { name: "Lemon Balm", img: "https://m.media-amazon.com/images/I/51iwsDmBfWL._AC_UF1000,1000_QL80_.jpg", desc: "Relieves irritability and stress." },
+            { name: "Valerian Root", img: "https://cdn-prod.medicalnewstoday.com/content/images/articles/318/318088/valerian-root.jpg", desc: "Helps with insomnia and tension." },
+            { name: "Passionflower", img: "https://cdn.sanity.io/images/pn4rwssl/production/a51e0427a80e85b1204a78a46a255841acba8b4a-768x1024.jpg?rect=0,5,768,1014&w=1920&h=2534&q=75&auto=format", desc: "Reduces PMS irritability and anxiety." }
+        ]
+    },
+    {
+        heading: "Bloating & Digestive Support",
+        plants: [
+            { name: "Fennel", img: "https://cloudinary.images-iherb.com/image/upload/f_auto,q_auto:eco/images/fro/fro02619/l/7.jpg", desc: "Reduces gas and bloating during periods." },
+            { name: "Peppermint", img: "https://cdn.britannica.com/46/139046-050-68C68E11/Peppermint.jpg", desc: "Eases digestion and stomach cramps." },
+            { name: "Ginger", img: "https://www.vitaeinternational.com/wp-content/uploads/2015/12/benefits-of-ginger-770x512.jpg", desc: "Relieves nausea and bloating." },
+            { name: "Dandelion", img: "https://www.canr.msu.edu/pestid/uploads/images/Dandelion-plant.jpg", desc: "Mild diuretic to reduce water retention." },
+            { name: "Cumin", img: "https://cdn.britannica.com/59/219359-050-662D86EA/Cumin-Spice.jpg", desc: "Supports digestion and reduces bloating." }
+        ]
+    },
+    {
+        heading: "Other Useful Herbs",
+        plants: [
+            { name: "Saffron", img: "https://media.post.rvohealth.io/wp-content/uploads/2020/11/saffron-732x549-thumbnail-732x549.jpg", desc: "Mood enhancer and eases PMS depression." },
+            { name: "Hibiscus", img: "https://www.thespruce.com/thmb/mE9-28XFACXl657Q3efps9rbqaY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/hibiscus-growing-guide-5192541-hero-615db48a744245c49517f7f4bef54d18.JPG", desc: "Reduces cramps and inflammation." },
+            { name: "Licorice Root", img: "https://cdn.britannica.com/54/10254-050-291DC744/glycyrrhizin-compound-food-additive-triterpene-glycoside-licorice.jpg", desc: "Supports hormones and PMS relief." },
+            { name: "Evening Primrose Oil", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Oenothera_biennis%2C_Vic-la-Gardiole_01.jpg/1200px-Oenothera_biennis%2C_Vic-la-Gardiole_01.jpg", desc: "Reduces breast tenderness and PMS." },
+            { name: "Tulsi", img: "https://media.post.rvohealth.io/wp-content/uploads/2020/09/1296x728_Holy_Basil-1200x628.jpg", desc: "Reduces stress and menstrual discomfort." }
+        ]
+    }
+];
+
+// Respiratory Data
+const respiratoryData = [
+    {
+        heading: "Common Cold & Cough",
+        plants: [
+            { name: "Tulsi", img: "https://5.imimg.com/data5/SELLER/Default/2025/6/520415475/DE/DH/KR/180399452/tulsi-plant.jpeg", desc: "Relieves cough and congestion; boosts immunity." },
+            { name: "Ginger", img: "https://www.vitaeinternational.com/wp-content/uploads/2015/12/benefits-of-ginger-770x512.jpg", desc: "Anti-inflammatory; clears mucus and throat irritation." },
+            { name: "Peppermint", img: "https://cdn.britannica.com/46/139046-050-68C68E11/Peppermint.jpg", desc: "Decongestant; soothes respiratory tract." },
+            { name: "Licorice Root", img: "https://cdn.britannica.com/54/10254-050-291DC744/glycyrrhizin-compound-food-additive-triterpene-glycoside-licorice.jpg", desc: "Soothes throat and reduces cough." },
+            { name: "Honey", img: "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/blogs/2147582967/images/f5d33d3-cc77-a026-04c-88cab8181b5_clove-uses-08.jpg", desc: "Antimicrobial; eases throat irritation." }
+        ]
+    },
+    {
+        heading: "Asthma",
+        plants: [
+            { name: "Vasaka", img: "https://m.media-amazon.com/images/I/41LhsW-6rtL._AC_UF1000,1000_QL80_.jpg", desc: "Opens airways, eases breathing." },
+            { name: "Turmeric", img: "https://www.viralspices.com/wp-content/uploads/2022/01/Evaluating-the-Differences-between-Fresh-and-Dried-Turmeric-624x312.jpg", desc: "Anti-inflammatory; reduces bronchial swelling." },
+            { name: "Black Seed", img: "https://img.lb.wbmdstatic.com/vim/live/webmd/consumer_assets/site_images/article_thumbnails/BigBead/black_seed_are_there_health_benefits_bigbead/1800x1200_black_seed_are_there_health_benefits_bigbead.jpg?resize=750px:*&output-quality=75", desc: "Reduces bronchial inflammation and wheezing." },
+            { name: "Ginger", img: "https://www.vitaeinternational.com/wp-content/uploads/2015/12/benefits-of-ginger-770x512.jpg", desc: "Supports airflow in lungs." },
+            { name: "Garlic", img: "https://cdn.britannica.com/37/174537-050-950EE618/Bulbs-cloves-garlic.jpg", desc: "Helps immune system fight respiratory triggers." }
+        ]
+    },
+    {
+        heading: "Bronchitis",
+        plants: [
+            { name: "Thyme", img: "https://bombayseeds.com/cdn/shop/files/thyme_1.jpg?v=1728889709", desc: "Antimicrobial; clears mucus." },
+            { name: "Eucalyptus", img: "https://media.post.rvohealth.io/wp-content/uploads/2024/09/eucalyptus-leaves-1296x728-feature.jpg", desc: "Decongestant; eases breathing." },
+            { name: "Pine", img: "https://www.forestryengland.uk/sites/default/files/styles/list_image_large_2x/public/media/Lodgepole%20pine.jpg?itok=Rfg9n0zl", desc: "Supports respiratory function; clears congestion." },
+            { name: "Licorice", img: "https://cdn.britannica.com/54/10254-050-291DC744/glycyrrhizin-compound-food-additive-triterpene-glycoside-licorice.jpg", desc: "Reduces inflammation and irritation in bronchial tubes." },
+            { name: "Peppermint", img: "https://cdn.britannica.com/46/139046-050-68C68E11/Peppermint.jpg", desc: "Relieves airway irritation." }
+        ]    },
+    {
+        heading: "Pneumonia",
+       plants: [
+            { name: "Garlic", img: "https://cdn.britannica.com/37/174537-050-950EE618/Bulbs-cloves-garlic.jpg", desc: "Antibacterial and antiviral; fights lung infection." },
+            { name: "Andrographis", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD6hYRTyj4oS-zPZyapE66F1BvjugjE8y6Lg&s", desc: "Supports immune response and respiratory recovery." },
+            { name: "Mullein", img: "https://cropwatch.unl.edu/sites/unl.edu.ianr.extension.cropwatch/files/styles/no_crop_720/public/media/image/2024-09-20-common-mullein-figure-2.jpg?itok=6twPdLPC", desc: "Soothes lung inflammation; clears mucus." },
+            { name: "Ginger", img: "https://www.vitaeinternational.com/wp-content/uploads/2015/12/benefits-of-ginger-770x512.jpg", desc: "Anti-inflammatory; supports lung healing." },
+            { name: "Turmeric", img: "https://www.viralspices.com/wp-content/uploads/2022/01/Evaluating-the-Differences-between-Fresh-and-Dried-Turmeric-624x312.jpg", desc: "Boosts immunity; anti-inflammatory." }
+        ]    },
+    {
+        heading: "Tuberculosis (TB) Supportive Herbs",
+       plants: [
+            { name: "Ashwagandha", img: "https://www.datocms-assets.com/46938/1677839378-raw-and-powdered-ashwagandha.jpeg", desc: "Supports immune system; reduces fatigue." },
+            { name: "Licorice", img: "https://cdn.britannica.com/54/10254-050-291DC744/glycyrrhizin-compound-food-additive-triterpene-glycoside-licorice.jpg", desc: "Soothes lungs; anti-inflammatory." },
+            { name: "Tulsi", img: "https://images.squarespace-cdn.com/content/v1/64233546fe63b3650a1ca944/28292a4f-c9bc-484f-b720-3309265653d1/tulsi.jpg", desc: "Boosts immunity; antimicrobial." },
+            { name: "Adhatoda vasica", img: "https://dms.mydukaan.io/original/jpeg/media/20bd76cd-1941-402a-8ac9-02f9866640bd.jpg", desc: "Helps in clearing mucus; supports lung health." }
+        ]    },
+    {
+        heading: "Sinusitis / Allergic Rhinitis",
+        plants: [
+            { name: "Chamomile", img: "https://media.post.rvohealth.io/wp-content/uploads/sites/3/2023/03/benefits_chamomile_tea_732x549_thumb-732x549.jpg", desc: "Reduces nasal inflammation." },
+            { name: "Peppermint", img: "https://cdn.britannica.com/46/139046-050-68C68E11/Peppermint.jpg", desc: "Opens nasal passages; eases breathing." },
+            { name: "Elderberry", img: "https://hgtvhome.sndimg.com/content/dam/images/hgtv/fullset/2018/3/12/0/CI_Nourse-Farms_Elderberry-Cluster.jpg.rend.hgtvcom.1280.1280.85.suffix/1520862537089.webp", desc: "Supports immune system; reduces allergy symptoms." },
+            { name: "Nettle", img: "https://uploads-ssl.webflow.com/5d8a366133b3d4f879cbd418/5d8a366133b3d480e0cbdd7d_vPz4JmvemxpaIM5z7FAe3A5UqV0nQtC47Hrf4prlWMn_QbOBs5tqeGIrHShB08vNG7Wnt3B2QDs-If4utTZCppvmgqpnl5qG4RLKVDApNwU-EAi-ASHXosDwdrr3sVRx-dhJTQrE.jpeg", desc: "Anti-inflammatory; reduces sinus swelling." },
+            { name: "Turmeric", img: "https://www.viralspices.com/wp-content/uploads/2022/01/Evaluating-the-Differences-between-Fresh-and-Dried-Turmeric-624x312.jpg", desc: "Reduces inflammation and allergic reactions." }
+        ]    },
+    {
+        heading: "Emphysema & COPD",
+        plants: [
+            { name: "Licorice", img: "https://cdn.britannica.com/54/10254-050-291DC744/glycyrrhizin-compound-food-additive-triterpene-glycoside-licorice.jpg", desc: "Reduces lung inflammation." },
+            { name: "Ginger", img: "https://www.vitaeinternational.com/wp-content/uploads/2015/12/benefits-of-ginger-770x512.jpg", desc: "Supports lung function." },
+            { name: "Turmeric", img: "https://www.viralspices.com/wp-content/uploads/2022/01/Evaluating-the-Differences-between-Fresh-and-Dried-Turmeric-624x312.jpg", desc: "Anti-inflammatory; supports airway health." },
+            { name: "Garlic", img: "https://cdn.britannica.com/37/174537-050-950EE618/Bulbs-cloves-garlic.jpg", desc: "Improves immune defense; antimicrobial." }
+        ]    },
+    {
+        heading: "Respiratory Infections / Viral Flu",
+       plants: [
+            { name: "Echinacea", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSvf3_1Xj5DnvPgRNmk5A_wketEeK7zTQJvQ&s", desc: "Boosts immunity; fights infections." },
+            { name: "Garlic", img: "https://cdn.britannica.com/37/174537-050-950EE618/Bulbs-cloves-garlic.jpg", desc: "Antiviral and antibacterial." },
+            { name: "Ginger", img: "https://www.vitaeinternational.com/wp-content/uploads/2015/12/benefits-of-ginger-770x512.jpg", desc: "Anti-inflammatory; eases sore throat and congestion." },
+            { name: "Tulsi", img: "https://5.imimg.com/data5/SELLER/Default/2025/6/520415475/DE/DH/KR/180399452/tulsi-plant.jpeg", desc: "Reduces fever; relieves cough." },
+            { name: "Elderberry", img: "https://hgtvhome.sndimg.com/content/dam/images/hgtv/fullset/2018/3/12/0/CI_Nourse-Farms_Elderberry-Cluster.jpg.rend.hgtvcom.1280.1280.85.suffix/1520862537089.webp", desc: "Reduces viral symptoms; boosts immunity." }
+        ]    },
+    {
+        heading: "Chest Congestion",
+         plants: [
+            { name: "Eucalyptus", img: "https://media.post.rvohealth.io/wp-content/uploads/2024/09/eucalyptus-leaves-1296x728-feature.jpg", desc: "Clears mucus; opens airways." },
+            { name: "Thyme", img: "https://bombayseeds.com/cdn/shop/files/thyme_1.jpg?v=1728889709", desc: "Antimicrobial; reduces mucus." },
+            { name: "Pine", img: "https://www.forestryengland.uk/sites/default/files/styles/list_image_large_2x/public/media/Lodgepole%20pine.jpg?itok=Rfg9n0zl", desc: "Reduces congestion." },
+            { name: "Ginger", img: "https://www.vitaeinternational.com/wp-content/uploads/2015/12/benefits-of-ginger-770x512.jpg", desc: "Helps in loosening phlegm." }
+        ]    }
+];
+//skin hair
+const skinHairData = [
+    {
+        heading: "Skin Health",
+        plants: [
+            { name: "Neem", img: "https://m.media-amazon.com/images/I/71SPnqGx-JL._AC_UF350,350_QL80_.jpg", desc: "Antibacterial; treats acne and skin infections." },
+            { name: "Aloe Vera", img: "https://media.post.rvohealth.io/wp-content/uploads/sites/3/2025/04/aloe-vera-GettyImages-1473547826-Header-1024x575.jpg", desc: "Soothes burns, moisturizes and heals skin." },
+            { name: "Turmeric", img: "https://www.viralspices.com/wp-content/uploads/2022/01/Evaluating-the-Differences-between-Fresh-and-Dried-Turmeric-624x312.jpg", desc: "Anti-inflammatory; improves complexion and treats acne." },
+            { name: "Tulsi", img: "https://5.imimg.com/data5/SELLER/Default/2025/6/520415475/DE/DH/KR/180399452/tulsi-plant.jpeg", desc: "Purifies blood; reduces skin irritation." },
+            { name: "Sandalwood", img: "https://iberchem.com/wp-content/uploads/2022/10/microsoftteams-image-114.jpg", desc: "Cools skin, treats rashes and improves complexion." },
+            { name: "Licorice", img: "https://cdn.britannica.com/54/10254-050-291DC744/glycyrrhizin-compound-food-additive-triterpene-glycoside-licorice.jpg", desc: "Reduces pigmentation and dark spots." },
+            { name: "Gotu Kola", img: "https://media.post.rvohealth.io/wp-content/uploads/sites/3/2020/02/CentellaAsiatica_thumb-732x549.jpg", desc: "Promotes wound healing and reduces scars." }
+        ]    },
+    {
+        heading: "Hair Health",
+       plants: [
+            { name: "Amla", img: "https://www.zettafarms.com/wp-content/uploads/2023/11/Amla.webp", desc: "Strengthens hair; prevents graying and promotes growth." },
+            { name: "Bhringraj", img: "https://ayuvya.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fayuvya_images%2Fblog_image%2FUntitled_design_-_2024-08-03T182201.764.webp&w=1080&q=75", desc: "Nourishes hair and reduces hair fall." },
+            { name: "Fenugreek", img: "https://img.lb.wbmdstatic.com/vim/live/webmd/consumer_assets/site_images/article_thumbnails/other/fenugreek_seeds_2_other/1800x1200_fenugreek_seeds__2_other.jpg", desc: "Strengthens follicles and reduces hair loss." },
+            { name: "Hibiscus", img: "https://www.thespruce.com/thmb/mE9-28XFACXl657Q3efps9rbqaY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/hibiscus-growing-guide-5192541-hero-615db48a744245c49517f7f4bef54d18.JPG", desc: "Stimulates hair growth and prevents graying." },
+            { name: "Rosemary", img: "https://post.medicalnewstoday.com/wp-content/uploads/sites/3/2017/12/rosemary-leaves-bound-in-rope-on-wooden-table.jpg", desc: "Improves scalp circulation and promotes hair growth." },
+            { name: "Aloe Vera", img: "https://media.post.rvohealth.io/wp-content/uploads/sites/3/2025/04/aloe-vera-GettyImages-1473547826-Header-1024x575.jpg", desc: "Conditions scalp, reduces dandruff, strengthens hair." },
+            { name: "Neem", img: "https://m.media-amazon.com/images/I/71SPnqGx-JL._AC_UF350,350_QL80_.jpg", desc: "Treats scalp infections, lice, and dandruff." }
+        ]    }
+];
+//liver data
+const liverHealthData = [
+    {
+        heading: "Herbs for Liver Disorders",
+        plants: [
+            { name: "Milk Thistle", img: "https://upload.wikimedia.org/wikipedia/commons/9/9f/Milk_thistle_flowerhead.jpg", desc: "Protects liver cells and supports detoxification." },
+            { name: "Dandelion", img: "https://www.canr.msu.edu/pestid/uploads/images/Dandelion-plant.jpg", desc: "Stimulates bile production and detoxifies the liver." },
+            { name: "Turmeric", img: "https://www.viralspices.com/wp-content/uploads/2022/01/Evaluating-the-Differences-between-Fresh-and-Dried-Turmeric-624x312.jpg", desc: "Anti-inflammatory and antioxidant; supports liver health." },
+            { name: "Licorice", img: "https://cdn.britannica.com/54/10254-050-291DC744/glycyrrhizin-compound-food-additive-triterpene-glycoside-licorice.jpg", desc: "Reduces liver inflammation and aids repair." },
+            { name: "Chicory", img: "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/blogs/2147582967/images/6af2afc-d628-5aac-fece-2e33af77a4e2_chicory-root-coffee-06.jpg", desc: "Supports bile flow and detoxifies the liver." },
+            { name: "Schisandra", img: "https://apps.rhs.org.uk/plantselectorimages/detail/vaem10469.jpg", desc: "Protects liver cells and improves liver enzyme levels." },
+            { name: "Artichoke", img: "https://www.allthatgrows.in/cdn/shop/articles/Feat_Image-Artichoke.jpg?v=1639375141", desc: "Stimulates bile production and lowers liver fat." },
+            { name: "Green Tea", img: "https://healthnewshub.org/wp-content/uploads/2024/12/Green-Tea-Ozempic.jpg", desc: "Rich in antioxidants; protects liver cells from toxins." },
+            { name: "Andrographis", img: "https://upload.wikimedia.org/wikipedia/commons/e/e2/Andrographis_echioides_%28False_Waterwillow%29_W_IMG_1533.jpg", desc: "Reduces liver inflammation and supports detoxification." },
+            { name: "Burdock Root", img: "https://assets.clevelandclinic.org/transform/89739a39-33aa-4758-924e-1560b1148a96/Burdock-Root-1285869088-770x533-1_jpg", desc: "Detoxifies liver and blood; improves liver function." }
+        ]    }
+];
+// Immunity Data
+const immunityData = [
+    {
+        heading: "Herbs to Boost Immunity",
+       plants: [
+            { name: "Tulsi", img: "https://5.imimg.com/data5/SELLER/Default/2025/6/520415475/DE/DH/KR/180399452/tulsi-plant.jpeg", desc: "Boosts immunity, fights infections, and supports respiratory health." },
+            { name: "Ashwagandha", img: "https://www.datocms-assets.com/46938/1677839378-raw-and-powdered-ashwagandha.jpeg", desc: "Strengthens immune system, reduces stress, and enhances energy." },
+            { name: "Amla", img: "https://www.zettafarms.com/wp-content/uploads/2023/11/Amla.webp", desc: "Rich in vitamin C; improves immune response and antioxidant defense." },
+            { name: "Giloy ", img: "https://m.media-amazon.com/images/I/51NkmzzMhdL._AC_UF1000,1000_QL80_.jpg", desc: "Boosts immunity, detoxifies blood, and fights infections." },
+            { name: "Echinacea", img: "https://www.naturalgardennatives.com/wp-content/uploads/sites/5/2021/09/Echinacea_purpurea-1-1024x1024.png", desc: "Stimulates white blood cells; reduces severity of colds and infections." },
+            { name: "Garlic ", img: "https://cdn.britannica.com/37/174537-050-950EE618/Bulbs-cloves-garlic.jpg", desc: "Antimicrobial and antiviral; supports immune defense." },
+            { name: "Ginger ", img: "https://www.vitaeinternational.com/wp-content/uploads/2015/12/benefits-of-ginger-770x512.jpg", desc: "Anti-inflammatory; supports immunity and fights infections." },
+            { name: "Turmeric", img: "https://www.viralspices.com/wp-content/uploads/2022/01/Evaluating-the-Differences-between-Fresh-and-Dried-Turmeric-624x312.jpg", desc: "Anti-inflammatory and antioxidant; strengthens immune system." },
+            { name: "Licorice", img: "https://cdn.britannica.com/54/10254-050-291DC744/glycyrrhizin-compound-food-additive-triterpene-glycoside-licorice.jpg", desc: "Reduces inflammation and supports respiratory immunity." },
+            { name: "Moringa", img: "https://media.post.rvohealth.io/wp-content/uploads/2024/12/moringa-oleifera-plant-tree-leaves-fruits-732x549-thumbnail.jpg", desc: "Rich in vitamins and antioxidants; enhances overall immunity." }
+        ]    }
+];
+// Stress & Sleep Data
+const stressSleepData = [
+    {
+        heading: "Herbs to Reduce Stress & Improve Sleep",
+       plants: [
+            { name: "Chamomile", img: "https://media.post.rvohealth.io/wp-content/uploads/sites/3/2023/03/benefits_chamomile_tea_732x549_thumb-732x549.jpg", desc: "Calms nerves, reduces anxiety, and aids sleep." },
+            { name: "Lavender", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-ZTPQHdvg7_TPQz_oWDPfFRgn9aHUfUm3PA&s", desc: "Reduces stress and promotes relaxation and restful sleep." },
+            { name: "Valerian Root", img: "https://cdn-prod.medicalnewstoday.com/content/images/articles/318/318088/valerian-root.jpg", desc: "Natural sedative; helps with insomnia and tension." },
+            { name: "Lemon Balm", img: "https://m.media-amazon.com/images/I/51iwsDmBfWL.AC_UF1000,1000_QL80.jpg", desc: "Relieves irritability, nervousness, and promotes calm sleep." },
+            { name: "Passionflower", img: "https://cdn.shopify.com/s/files/1/0573/3993/6868/files/passionflower-passiflora-on-vine.jpg?v=1742414231", desc: "Reduces anxiety, eases insomnia, and supports mental relaxation." },
+            { name: "Ashwagandha", img: "https://www.datocms-assets.com/46938/1677839378-raw-and-powdered-ashwagandha.jpeg", desc: "Reduces stress, improves sleep quality, and balances hormones." },
+            { name: "Tulsi", img: "https://5.imimg.com/data5/SELLER/Default/2025/6/520415475/DE/DH/KR/180399452/tulsi-plant.jpeg", desc: "Lowers stress and supports adrenal function for better sleep." },
+            { name: "Magnolia Bark", img: "https://i0.wp.com/post.healthline.com/wp-content/uploads/2020/03/magnolia-tree-bark-1296x728-header.jpg?w=1155&h=1528", desc: "Calms nerves, reduces anxiety, and improves sleep quality." },
+            { name: "Hops", img: "https://cdn.mos.cms.futurecdn.net/8hV3vXffLuCwxsrMpTJNGn.jpg", desc: "Sedative effect; helps with insomnia and restless sleep." },
+            { name: "Reishi Mushroom", img: "https://funginatur.com/wp-content/uploads/2025/04/reishi-hongo.-jpeg.webp", desc: "Supports relaxation, reduces stress, and improves sleep patterns." }
+        ]    }
+];
+// Pain Relief Data
+const painReliefData = [
+    {
+        heading: "Herbs to Relieve Pain and Inflammation",
+        plants: [
+            { name: "Ginger", img: "https://www.vitaeinternational.com/wp-content/uploads/2015/12/benefits-of-ginger-770x512.jpg", desc: "Anti-inflammatory; reduces joint pain, headaches, and muscle soreness." },
+            { name: "Turmeric", img: "https://www.viralspices.com/wp-content/uploads/2022/01/Evaluating-the-Differences-between-Fresh-and-Dried-Turmeric-624x312.jpg", desc: "Contains curcumin; reduces inflammation and eases chronic pain." },
+            { name: "Willow Bark", img: "https://media.post.rvohealth.io/wp-content/uploads/2024/09/willow-tree-732-549-feature-thumb.jpg", desc: "Natural source of salicin; helps relieve back pain, headaches, and arthritis." },
+            { name: "Boswellia", img: "https://files.nccih.nih.gov/boswellia-square.jpg", desc: "Anti-inflammatory; reduces joint pain and stiffness." },
+            { name: "Cloves", img: "https://cdn.mos.cms.futurecdn.net/dD52bNpiVsDi4fPkGFB6bL.jpg", desc: "Analgesic properties; helps with toothaches and minor pain." },
+            { name: "Peppermint", img: "https://cdn.britannica.com/46/139046-050-68C68E11/Peppermint.jpg", desc: "Cooling effect; relieves headaches and muscle tension." },
+            { name: "Cayenne Pepper", img: "https://connect.healthkart.com/wp-content/uploads/2023/12/900-57.jpg", desc: "Contains capsaicin; eases nerve and joint pain topically." },
+            { name: "Ashwagandha", img: "https://www.datocms-assets.com/46938/1677839378-raw-and-powdered-ashwagandha.jpeg", desc: "Reduces inflammation and muscle pain; supports recovery." },
+            { name: "Devils Claw", img: "https://thefeelgoodlab.com/cdn/shop/articles/1_How_to_treat_your_pain_with_devilGCOs_claw_root_2048x.jpg?v=1541761066", desc: "Reduces joint and back pain; anti-inflammatory effect." },
+            { name: "Chamomile", img: "https://media.post.rvohealth.io/wp-content/uploads/sites/3/2023/03/benefits_chamomile_tea_732x549_thumb-732x549.jpg", desc: "Soothes muscle aches and reduces mild pain; calming effect." }
+        ]    }
+];
+
+function setActiveTab(activeTab) {
+    document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+    activeTab.classList.add("active");
+}
+
+function displayPlants(category = "", searchQuery = "") {
+    plantContainer.innerHTML = "";
+    let dataToDisplay = [];
+
+    if(category === "Women’s Health") dataToDisplay = womensHealthData;
+    else if(category === "Respiratory") dataToDisplay = respiratoryData;
+    else if(category === "Skin & Hair") dataToDisplay = skinHairData;
+    else if(category === "Liver Health") dataToDisplay = liverHealthData;
+    else if(category === "Immunity") dataToDisplay = immunityData;
+    else if(category === "Stress & Sleep") dataToDisplay = stressSleepData;
+    else if(category === "Pain Relief") dataToDisplay = painReliefData;
+    else dataToDisplay = [].concat(womensHealthData, respiratoryData, skinHairData, liverHealthData, immunityData, stressSleepData, painReliefData);
+
+    dataToDisplay.forEach(section => {
+        const filteredPlants = section.plants.filter(plant => plant.name.toLowerCase().includes(searchQuery));
+        if(filteredPlants.length > 0) {
+            const secDiv = document.createElement("div");
+            secDiv.className = "section";
+            secDiv.innerHTML = `<h2>${section.heading}</h2>`;
+            const gridDiv = document.createElement("div");
+            gridDiv.className = "plants-grid";
+
+            filteredPlants.forEach(plant => {
+                const plantCard = document.createElement("div");
+                plantCard.className = "plant-card";
+                plantCard.innerHTML = `
+                    <img src="${plant.img}" alt="${plant.name}">
+                    <h3>${plant.name}</h3>
+                    <p>${plant.desc}</p>
+                    <a href="/${plant.name.toLowerCase().replace(/ /g,'')}">
+                    <button>Know More</button>
+                    </a>
+                `;
+                gridDiv.appendChild(plantCard);
+            });
+
+            secDiv.appendChild(gridDiv);
+            plantContainer.appendChild(secDiv);
+        }
+    });
+}
+
+function filterPlants(category, activeTab) {
+    setActiveTab(activeTab);
+    displayPlants(category, searchInput.value.trim().toLowerCase());
+}
+
+// ---- CREATE TABS ----
+categories.forEach((cat, index) => {
+    const tab = document.createElement("div");
+    tab.className = "tab";
+    if(index === 0) tab.classList.add("active");
+    tab.textContent = cat;
+    tab.addEventListener("click", () => {
+        filterSelect.value = cat;
+        filterPlants(cat, tab);
+    });
+    tabsContainer.appendChild(tab);
+});
+
+// ---- EVENTS ----
+searchInput.addEventListener("input", () => {
+    const query = searchInput.value.trim().toLowerCase();
+    // If search box is empty, show selected filter tab
+    if(query === "") {
+        displayPlants(filterSelect.value, "");
+        const tabToActivate = Array.from(tabsContainer.children).find(tab => tab.textContent === filterSelect.value);
+        if(tabToActivate) setActiveTab(tabToActivate);
+    } else {
+        // Global search across all categories
+        displayPlants("", query);
+        setActiveTab(null); // no tab active when searching globally
+    }
+});
+
+
+function goHome() {
+    window.location.href = "/";
+//Replace with your home page URL
+}
+
+
+// ---- INITIAL DISPLAY ----
+filterPlants("Women’s Health", tabsContainer.children[0]);
+</script>
+
+</body>
+</html>

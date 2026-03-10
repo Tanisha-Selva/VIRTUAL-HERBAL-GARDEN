@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome</title>
+
+<!-- Calligraphy font -->
+<link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: #D1DECF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        text-align: center;
+        cursor: pointer;
+        transition: transform 0.7s ease, opacity 0.7s ease;
+    }
+
+    .logo {
+        width: 500px;   /* increased size */
+        height: 500px;  /* increased size */
+        margin-bottom: 20px;
+        transition: inherit;
+    }
+
+    .app-name {
+        font-family: 'Allura', cursive;
+        font-size: 55px;
+        line-height: 55px;
+        color: #1a3d1a;
+        transition: inherit;
+        margin-top: -150px;   /* moves text upward */
+    }
+
+    .shrink {
+        transform: scale(0.1);
+        opacity: 0;
+    }
+</style>
+</head>
+<body>
+
+<div class="container" id="enterPage">
+    <img src="logo.png" class="logo" alt="Logo">
+
+    <!-- Two lines -->
+    <div class="app-name">
+        Virtual<br>
+        Herbal Garden
+    </div>
+</div>
+
+<script>
+    const container = document.getElementById("enterPage");
+
+    container.addEventListener("click", () => {
+        container.classList.add("shrink");
+        
+        setTimeout(() => {
+            window.location.href = "index.html";
+        }, 700);
+    });
+</script>
+
+</body>
+</html>

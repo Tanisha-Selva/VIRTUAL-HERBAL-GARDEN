@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Herbal Garden</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            background-image: url("Wireframe.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center 10%;
+            background-color: #D1DECF;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 55px;
+            color: #2e4d32;
+            margin-top: 50px;
+            text-shadow: 0px 3px 6px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 30px; /* Increased */
+            font-weight: bold;
+            letter-spacing: 3px;
+            color: #2e4d32;
+            margin-top: 200px;
+            text-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .button-row {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .circle {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 3px solid #2e4d32;
+            display: flex;
+            flex-direction: column;   /* emoji + text stacked */
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(216, 239, 207, 0.8); /* Uniform emoji bg */
+            backdrop-filter: blur(4px);
+            cursor: pointer;
+            transition: 0.3s ease;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .circle:hover {
+            transform: scale(1.08);
+            background-color: rgba(216, 239, 207, 1);
+        }
+
+        .emoji {
+            font-size: 35px;
+            margin-bottom: 5px;
+        }
+
+        .circle-text {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #2e4d32;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 class="title">Virtual Herbal Garden</h1>
+
+    <p class="subtitle">VIRTUAL ROOTS, REAL IMPACT</p>
+
+    <div class="button-row">
+        
+        <a href="explore.html">
+            <div class="circle">
+                <span class="emoji">🌿</span>
+                <span class="circle-text">EXPLORE HERBS</span>
+            </div>
+        </a>
+
+        <a href="find.html">
+            <div class="circle">
+                <span class="emoji">🔍</span>
+                <span class="circle-text">FIND MY HERB</span>
+            </div>
+        </a>
+
+        <a href="siddha.html">
+            <div class="circle">
+                <span class="emoji">📜</span>
+                <span class="circle-text">KNOW SIDDHA</span>
+            </div>
+        </a>
+
+    </div>
+
+</body>
+</html>

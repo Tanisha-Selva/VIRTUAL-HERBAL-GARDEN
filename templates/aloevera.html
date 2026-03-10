@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aloe Vera (Katrāzhai) - Siddha Literature</title>
+    <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-image: url("{{ url_for('static', filename='2.jpg') }}");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center top -350px; 
+        background-attachment: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+    }
+
+    .overlay {
+        background: rgba(255, 255, 255, 0.9); 
+        padding: 30px; 
+        border: 3px solid #1e7040; 
+        border-radius: 12px;
+        max-width: 900px; 
+        width: 90%;
+        margin: 40px 50px 40px auto; 
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); 
+    }
+
+    .container { width: 100%; }
+
+    .title {
+        text-align: center;
+        font-size: 2.5em;
+        margin-bottom: 25px;
+        color: #1e7040;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .main-content-area { 
+        display: flex;
+        gap: 30px;
+        margin-bottom: 30px;
+        align-items: flex-start;
+    }
+
+    .image-container { 
+        flex-shrink: 0; 
+        width: 150px;  
+        height: 150px;
+        border: 3px solid #1e7040; 
+        border-radius: 8px; 
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; 
+    }
+
+    .details-column { flex-grow: 1; }
+
+    .botanical-info p {
+        margin: 8px 0; 
+        font-size: 1.05em;
+        line-height: 1.5;
+        color: #333;
+    }
+
+    .botanical-info p strong { color: #004d40; }
+
+    .siddha-properties h3, .uses-section h3 {
+        color: #4CAF50;
+        text-align: left; 
+        margin-bottom: 15px;
+        font-size: 1.4em;
+        padding-bottom: 5px;
+        border-bottom: 2px solid #4CAF50;
+    }
+
+    .siddha-properties ul, .uses-section ul {
+        list-style-type: '🌿 ';
+        padding-left: 25px;
+        margin: 0;
+        font-size: 1em;
+        color: #333;
+    }
+
+    .uses-section .use-item { margin-bottom: 15px; }
+
+    .use-item h4 {
+        color: #1e7040;
+        margin: 5px 0;
+        font-size: 1.1em;
+    }
+
+    .siddha-reference {
+        margin-top: 30px;
+        border-top: 2px solid #1e7040;
+        padding-top: 15px;
+        text-align: center;
+        background-color: #e8f5e9;
+        padding: 15px;
+        border-radius: 5px;
+        color: #555;
+        font-size: 0.95em;
+    }
+
+    @media (max-width: 768px) {
+        .overlay { margin: 40px auto; }
+        .main-content-area {
+            flex-direction: column; 
+            align-items: center; 
+        }
+        .image-container { width: 100px; height: 100px; }
+    }
+</style>
+ <div class="overlay">
+    <div class="container">
+        <h1 class="title">Aloe Vera (கற்றாழை)</h1>
+
+        <div class="main-content-area">
+            <div class="image-container">
+                <img src="https://pushtiorganics.com/cdn/shop/files/AloeveraLeaves_cf0fcdbc-940f-4432-afd8-1910c2d33a57.png?v=1709208590" alt="Aloe Vera Plant">
+            </div>
+
+            <div class="details-column">
+                <div class="botanical-info">
+                    <p><strong>SCIENTIFIC NAME:</strong> <em>Aloe barbadensis Miller</em></p>
+                    <p><strong>TAMIL NAME:</strong> கற்றாழை (Katrazhai)</p>
+                    <p><strong>PARTS USED:</strong> Leaf gel, Leaf latex (juice), Whole leaf</p>
+                </div>
+
+                <div class="siddha-properties">
+                    <h3>KEY TRADITIONAL PROPERTIES</h3>
+                    <ul>
+                        <li>Katrazhai is widely used in Siddha medicine for cooling, healing, rejuvenation, and digestive benefits.</li>
+                        <li><strong>Sitagaram:</strong> Natural coolant that reduces excess body heat (Pitta).</li>
+                        <li><strong>Vranaropana:</strong> Excellent wound healer and skin repair agent.</li>
+                        <li><strong>Kabha Pitham Neekki:</strong> Balances both Kapha and Pitta doshas.</li>
+                        <li><strong>Laxative:</strong> Acts as a gentle purgative to relieve constipation.</li>
+                        <li><strong>Rasayana:</strong> Rejuvenates tissues and enhances overall vitality.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="uses-section">
+            <h3>TRADITIONAL USES, DISEASES CURED, & APPLICATION</h3>
+
+            <div class="use-item">
+                <h4>1. Skin Healing (Burns, Rashes, Wounds)</h4>
+                <ul>
+                    <li><strong>Cure/Relief:</strong> Heals burns quickly, reduces irritation, and regenerates skin.</li>
+                    <li><strong>Application:</strong> Fresh gel applied directly on the skin reduces inflammation and accelerates healing.</li>
+                </ul>
+            </div>
+
+            <div class="use-item">
+                <h4>2. Digestive Problems & Constipation</h4>
+                <ul>
+                    <li><strong>Cure/Relief:</strong> Acts as a mild laxative and soothes gastric irritation.</li>
+                    <li><strong>Application:</strong> Small quantity of aloe latex or juice taken in the morning improves bowel movement.</li>
+                </ul>
+            </div>
+
+            <div class="use-item">
+                <h4>3. Diabetes Support</h4>
+                <ul>
+                    <li><strong>Cure/Relief:</strong> Helps regulate blood sugar levels naturally.</li>
+                    <li><strong>Application:</strong> Aloe gel or juice is consumed daily under supervision of a Siddha practitioner.</li>
+                </ul>
+            </div>
+
+            <div class="use-item">
+                <h4>4. Hair & Scalp Health</h4>
+                <ul>
+                    <li><strong>Cure/Relief:</strong> Reduces dandruff, strengthens roots, and prevents hair fall.</li>
+                    <li><strong>Application:</strong> Aloe gel applied to scalp nourishes follicles and prevents dryness.</li>
+                </ul>
+            </div>
+
+            <div class="use-item">
+                <h4>5. Ulcer & Gastritis</h4>
+                <ul>
+                    <li><strong>Cure/Relief:</strong> Soothes stomach lining and reduces acid inflammation.</li>
+                    <li><strong>Application:</strong> Aloe juice taken in small amounts before food helps relieve pain and burning sensation.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="siddha-reference">
+            <p>AS DESCRIBED IN SIDDHA LITERATURE</p>
+            <span>** Agathiyar Gunavagadam **</span>
+        </div>
+    </div>
+</div>

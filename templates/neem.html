@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neem (Vembu) - Siddha Literature</title>
+   <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-image: url("{{ url_for('static', filename='2.jpg') }}");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center top -350px; 
+        background-attachment: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+    }
+
+    /* Main centered card */
+    .overlay {
+        background: rgba(255, 255, 255, 0.9); 
+        padding: 30px; 
+        border: 3px solid #1e7040; 
+        border-radius: 12px;
+        max-width: 900px; 
+        margin: 40px 50px 40px auto; 
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); 
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    .title {
+        text-align: center;
+        font-size: 2.5em;
+        margin-bottom: 25px;
+        color: #1e7040;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .main-content-area { 
+        display: flex;
+        gap: 30px;
+        margin-bottom: 30px;
+        align-items: flex-start;
+    }
+
+    .image-container { 
+        flex-shrink: 0; 
+        width: 150px;  
+        height: 150px;
+        border: 3px solid #1e7040; 
+        border-radius: 8px; 
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; 
+    }
+
+    .details-column { 
+        flex-grow: 1; 
+    }
+
+    .botanical-info p {
+        margin: 8px 0; 
+        font-size: 1.05em;
+        line-height: 1.5;
+        color: #333;
+    }
+
+    .botanical-info p strong {
+        color: #004d40;
+    }
+
+    .siddha-properties h3, .uses-section h3 {
+        color: #4CAF50;
+        text-align: left; 
+        margin-bottom: 15px;
+        font-size: 1.4em;
+        padding-bottom: 5px;
+        border-bottom: 2px solid #4CAF50;
+    }
+
+    .siddha-properties ul, .uses-section ul {
+        list-style-type: '🌿 ';
+        padding-left: 25px;
+        margin: 0;
+        font-size: 1em;
+        color: #333;
+    }
+
+    .siddha-properties ul li, .uses-section ul li {
+        margin-bottom: 8px;
+    }
+
+    .siddha-properties ul li strong, .uses-section ul li strong {
+        color: #004d40;
+        font-weight: bold;
+    }
+
+    .uses-section {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px dashed #4CAF50;
+    }
+
+    .uses-section .use-item {
+        margin-bottom: 15px;
+    }
+
+    .uses-section .use-item h4 {
+        color: #1e7040;
+        margin: 5px 0;
+        font-size: 1.1em;
+    }
+
+    .siddha-reference {
+        margin-top: 30px;
+        border-top: 2px solid #1e7040;
+        padding-top: 15px;
+        text-align: center;
+        background-color: #e8f5e9;
+        padding: 15px;
+        border-radius: 5px;
+        color: #555;
+        font-size: 0.95em;
+    }
+
+    .siddha-reference span {
+        font-weight: bold;
+        font-style: italic;
+        color: #004d40;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .overlay {
+            /* Reset for smaller screens to ensure readability */
+            margin: 40px auto; 
+        }
+        .main-content-area {
+            flex-direction: column; 
+            align-items: center; 
+        }
+
+        .image-container {
+            width: 100px;  
+            height: 100px;
+        }
+        .details-column {
+            align-items: flex-start; 
+            text-align: left;
+        }
+    }
+</style>
+ <div class="overlay">
+    <div class="container">
+        <h1 class="title">Neem (வேப்பம்)</h1>
+
+        <div class="main-content-area">
+            <div class="image-container">
+                <img src="https://m.media-amazon.com/images/I/71yi6pcJidL._AC_UF350,350_QL80_.jpg" alt="Neem Plant">
+            </div>
+
+            <div class="details-column">
+                <div class="botanical-info">
+                    <p><strong>SCIENTIFIC NAME:</strong> <em>Azadirachta Indica</em></p>
+                    <p><strong>TAMIL NAME:</strong> வேப்பம் (Vembu)</p>
+                    <p><strong>PARTS USED:</strong> Leaf, Bark, Flower, Fruit (Neem Oil), Twig</p>
+                </div>
+
+                <div class="siddha-properties">
+                    <h3>KEY TRADITIONAL PROPERTIES</h3>
+                    <ul>
+                        <li>Veppam is a major herb in Siddha Medicine, famous for its Kasam (bitter taste) and ability to balance excess Pitta and Kapha doshas.</li>
+                        <li><strong>Anti-Pyretic:</strong> Helps reduce all types of fevers (e.g., intermittent and chronic fevers).</li>
+                        <li><strong>Janthu Hara:</strong> Strong anti-parasitic and anti-helminthic action (kills worms).</li>
+                        <li><strong>Vrana Ropana:</strong> Promotes rapid wound healing.</li>
+                        <li><strong>Kushtagna:</strong> Highly effective against various skin diseases (leprosy, eczema, fungal infections).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="uses-section">
+            <h3>TRADITIONAL USES, DISEASES CURED, & APPLICATION</h3>
+            <div class="use-item">
+                <h4>1. Skin Diseases (Eczema, Psoriasis, Fungal Infections)</h4>
+                <ul>
+                    <li><strong>Cure/Relief:</strong> Its anti-bacterial and anti-fungal properties cleanse the skin and reduce inflammation.</li>
+                    <li><strong>Application:</strong> Paste of Neem leaves is applied externally to affected areas. Consuming a small quantity of Neem leaf juice or capsules helps purify the blood from within.</li>
+                </ul>
+            </div>
+
+            <div class="use-item">
+                <h4>2. Fever & Malaria</h4>
+                <ul>
+                    <li><strong>Cure/Relief:</strong> Acts as a natural antipyretic and its constituents are effective against malarial parasites.</li>
+                    <li><strong>Application:</strong> Decoction (Kashayam) made from Neem bark or leaves is traditionally consumed to lower fever and combat the infection.</li>
+                </ul>
+            </div>
+
+            <div class="use-item">
+                <h4>3. Dental & Oral Health</h4>
+                <ul>
+                    <li><strong>Cure/Relief:</strong> Prevents gum disease, tooth decay, and bad breath due to its antiseptic nature.</li>
+                    <li><strong>Application:</strong> Chewing a fresh Neem twig (Datun) is a historical and effective method for brushing teeth and strengthening gums.</li>
+                </ul>
+            </div>
+
+            <div class="use-item">
+                <h4>4. Diabetes Management</h4>
+                <ul>
+                    <li><strong>Cure/Relief:</strong> Certain compounds in Neem leaves are known to help lower and regulate blood sugar levels.</li>
+                    <li><strong>Application:</strong> Neem leaf powder or extract is taken orally daily, under the guidance of a traditional practitioner.</li>
+                </ul>
+            </div>
+
+            <div class="use-item">
+                <h4>5. Wound & Ulcer Healing</h4>
+                <ul>
+                    <li><strong>Cure/Relief:</strong> Accelerates the healing process by keeping the wound free of infection and reducing inflammation.</li>
+                    <li><strong>Application:</strong> Neem oil or powdered dried leaves are sprinkled/applied directly onto wounds, cuts, or chronic ulcers.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="siddha-reference">
+            <p>AS DESCRIBED IN SIDDHA LITERATURE</p>
+            <span>** Agathiyar Gunavagadam **</span>
+        </div>
+    </div>
+</div>

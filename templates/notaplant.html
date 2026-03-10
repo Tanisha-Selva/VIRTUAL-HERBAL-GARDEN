@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Not a Plant!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #D1DECF;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .container {
+            margin-top: 80px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #558b2f;
+            animation: shake 0.2s infinite;
+        }
+
+        p {
+            font-size: 1.3rem;
+            color: #444;
+            margin-top: 20px;
+        }
+
+        img {
+            width: 280px;
+            margin-top: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(2px, 2px); }
+            50% { transform: translate(-2px, -2px); }
+            100% { transform: translate(2px, 2px); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .back-btn {
+            padding: 12px 26px;
+            background: #558b2f;
+            color: white;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 25px;
+        }
+
+        .back-btn:hover {
+            background: #6dac3d;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <h1>🌱 Oops!</h1>
+    <h2>NOT a plant!</h2>
+
+    <img src="https://i.pinimg.com/originals/b1/03/3b/b1033bc996c69d3a6003c2fa07281aaf.gif">
+
+    <p>
+        Either you clicked something strange…  
+        or this plant is hiding from science 👀🌿
+    </p>
+
+    <button onclick="window.location.href='/explore'" class="back-btn">
+        Back to Explore
+    </button>
+</div>
+</body>
+</html>
