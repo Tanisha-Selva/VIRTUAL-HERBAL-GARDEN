@@ -23,3 +23,22 @@ python server.py
 
 3. Open browser
 http://127.0.0.1:5000
+## Project Screenshots
+
+### Home Page
+![Home](screenshots/vhg1.png)
+
+### Explore Herbs
+![Explore](screenshots/vhg2.png)
+
+### Find my herb
+![Plant Info](screenshots/vhg3.png)
+
+### Detection page
+![Siddha](screenshots/vhg4.png)
+
+### Herb information
+![Detection](screenshots/vhg5.png)
+
+### Know Siddha
+![Result](screenshots/vhg6.png)
